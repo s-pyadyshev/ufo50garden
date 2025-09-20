@@ -772,7 +772,7 @@
       <img src="images/sPet_ItemFruit_0.png" alt="sPet_ItemFruit_0" class="garden-item clickable sPet_ItemFruit_0"
         id="fruit" />
       <img src="images/sPet_ItemGolfball_0.png" alt="sPet_ItemGolfball_0"
-        class="garden-item sPet_ItemGolfball_0 clickable" id="golfBall" />
+        class="garden-item sPet_ItemGolfball_0 clickable" id="golfball" />
       <!-- Gopher -->
       <div id="gopherWrap">
         <img src="images/sPet_ItemGopherHole_0.png" alt="sPet_ItemGopherHole_0"
@@ -1065,7 +1065,7 @@
           <span>Dino</span>
         </label>
         <label class="checkbox-item">
-          <input type="checkbox" id="checkbox-golfBall" checked onchange="toggleVisibility('golfBall', this.checked)" />
+          <input type="checkbox" id="checkbox-golfball" checked onchange="toggleVisibility('golfball', this.checked)" />
           <span>Golf Ball</span>
         </label>
         <label class="checkbox-item">
@@ -1240,6 +1240,7 @@
         "fish",
         "fridge",
         "fruit",
+        "golfball",
         "gopher",
         "guitar",
         "hatRack",
@@ -1250,6 +1251,7 @@
         "possums",
         "stove",
         "sun",
+        "sunflower",
         "telescope",
         "trapdoor",
         "trunk",
@@ -1297,6 +1299,7 @@
         "flag",
         "fruit",
         "ghost",
+        "golfball",
         "grapes",
         "housePlant",
         "jumpRope",
@@ -1352,22 +1355,58 @@
       if (clickedCanvas) clickedCanvas.classList.remove("is-hidden");
     }
 
-    // Toggle single elements (for consistency, though currently they don't have a paired state)
+    // Toggle single elements by toggling their corresponding checkbox
     function toggleSingleElement(elementId) {
-      // If you want single elements to toggle visibility on click, uncomment the following:
+      // Map the element ID to its corresponding checkbox ID
+      // This mapping is based on the `onchange` attributes in the HTML
+      const checkboxMap = {
+        "ants": "checkbox-ants",
+        "bed": "checkbox-bed",
+        "bird": "checkbox-bird",
+        "bookshelf": "checkbox-bookshelf",
+        "butterfly": "checkbox-butterfly",
+        "calendar": "checkbox-calendar",
+        "cardboardBoxes": "checkbox-cardboardBoxes",
+        "cattails": "checkbox-cattails",
+        "cherryFlag": "checkbox-cherryFlag",
+        "couch": "checkbox-couch",
+        "drink": "checkbox-drink",
+        "exerciseBike": "checkbox-exerciseBike",
+        "flag": "checkbox-flag",
+        "fruit": "checkbox-fruit",
+        "ghost": "checkbox-ghost",
+        "golfball": "checkbox-golfball",
+        "grapes": "checkbox-grapes",
+        "housePlant": "checkbox-housePlant",
+        "jumpRope": "checkbox-jumpRope",
+        "lamp": "checkbox-lamp",
+        "mirror": "checkbox-mirror",
+        "monkey": "checkbox-monkey",
+        "monkeyFence": "checkbox-monkeyFence",
+        "owl": "checkbox-owl",
+        "painting": "checkbox-painting",
+        "rug": "checkbox-rug",
+        "satellite": "checkbox-satellite",
+        "spider": "checkbox-spider",
+        "sunflower": "checkbox-sunflower",
+        "toilet": "checkbox-toilet",
+        "trophy": "checkbox-trophy",
+        "ufo": "checkbox-ufo",
+      };
 
-      const element = document.getElementById(elementId);
-      if (element) {
-        if (element.classList.contains('is-hidden')) {
-          element.classList.remove('is-hidden');
-        } else {
-          element.classList.add('is-hidden');
-        }
+      const checkboxId = checkboxMap[elementId];
+      if (!checkboxId) {
+        console.warn(`No checkbox mapping found for element ID: ${elementId}`);
+        return;
       }
 
-      // Currently, single elements like flags don't have an "off" state in the original code,
-      // so this function is a placeholder. You can implement custom behavior here if needed.
-      console.log(`Single element clicked: ${elementId}`);
+      const checkbox = document.getElementById(checkboxId);
+      if (checkbox) {
+        // Toggle the checkbox state
+        checkbox.checked = !checkbox.checked;
+        // Trigger the onchange event to update visibility
+        toggleVisibility(elementId, checkbox.checked);
+      }
     }
 
     // Toggle visibility of entire elements via checkboxes (unchanged)
