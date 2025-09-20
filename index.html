@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFO 50 Garden</title>
+  <meta name="description" content="Interactive UFO 50 garden">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f0f0;
+      min-height: 100vh;
+      padding: 29px 0 0;
+    }
+
+    img {
+      image-rendering: pixelated;
+    }
+
+    .garden-container {
+      position: relative;
+      width: 384px;
+      height: 216px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .garden-background {
+      width: 384px;
+      height: 216px;
+    }
+
+    .garden-item {
+      z-index: 2;
+      position: absolute;
+    }
+
+    .is-hidden {
+      display: none;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    .sPet_HouseFG_0,
+    .sPet_ItemSatellite_0 {
+      z-index: 3;
+    }
+
+    /* Responsive breakpoints */
+    @media (min-width: 768px) {
+      .garden-container {
+        width: 768px;
+        height: 432px;
+      }
+
+      .garden-background {
+        width: 768px;
+        height: 432px;
+      }
+    }
+
+    @media (min-width: 1152px) {
+      .garden-container {
+        width: 1152px;
+        height: 648px;
+      }
+
+      .garden-background {
+        width: 1152px;
+        height: 648px;
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .garden-container {
+        width: 1536px;
+        height: 864px;
+      }
+
+      .garden-background {
+        width: 1536px;
+        height: 864px;
+      }
+    }
+
+    /* Garden item positions - using CSS custom properties for responsive scaling */
+    :root {
+      --scale: 1;
+    }
+
+    @media (min-width: 768px) {
+      :root {
+        --scale: 2;
+      }
+    }
+
+    @media (min-width: 1152px) {
+      :root {
+        --scale: 3;
+      }
+    }
+
+    @media (min-width: 1536px) {
+      :root {
+        --scale: 4;
+      }
+    }
+
+    .sPet_ItemAnts_0 {
+      top: calc(192px * var(--scale));
+      left: calc(272px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_FlagCherry_50 {
+      top: calc(125px * var(--scale));
+      left: calc(336px * var(--scale));
+      width: calc(45px * var(--scale));
+      height: calc(40px * var(--scale));
+    }
+
+    .sPet_ItemBed_0 {
+      top: calc(48px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemBike_0 {
+      top: calc(24px * var(--scale));
+      left: calc(224px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemBird_0 {
+      top: calc(8px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(8px * var(--scale));
+    }
+
+    .sPet_ItemBlender_0,
+    .sPet_ItemBlenderOn_0 {
+      z-index: 2;
+      top: calc(128px * var(--scale));
+      left: calc(224px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemBooks_0 {
+      top: calc(128px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemBoxes_0 {
+      top: calc(32px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(24px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemButterfly_0 {
+      z-index: 3;
+      top: calc(149px * var(--scale));
+      left: calc(111px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemCalendar_0 {
+      top: calc(80px * var(--scale));
+      left: calc(208px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemCanvas_0,
+    .sPet_ItemCanvas_1,
+    .sPet_ItemCanvas_2,
+    .sPet_ItemCanvas_3 {
+      z-index: 3;
+      top: calc(148px * var(--scale));
+      left: calc(43px * var(--scale));
+      width: calc(24px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemCattails_0 {
+      top: calc(160px * var(--scale));
+      left: calc(0px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(48px * var(--scale));
+    }
+
+    .sPet_ItemCouch_0 {
+      top: calc(144px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemCow_0 {
+      z-index: 2;
+      top: calc(128px * var(--scale));
+      left: calc(88px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemDesk_0,
+    .sPet_ItemDeskOn_0 {
+      top: calc(96px * var(--scale));
+      left: calc(224px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemDino_0 {
+      top: calc(96px * var(--scale));
+      left: calc(128px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(48px * var(--scale));
+    }
+
+    .sPet_ItemDinoOn_0 {
+      top: calc(96px * var(--scale));
+      left: calc(128px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(80px * var(--scale));
+    }
+
+    .sPet_ItemDirt_0,
+    .sPet_ItemDirtOn_0 {
+      top: calc(176px * var(--scale));
+      left: calc(320px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_Drink_0 {
+      z-index: 4;
+      top: calc(154px * var(--scale));
+      left: calc(80px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemFish_0,
+    .sPet_ItemFishCooked_0 {
+      top: calc(190px * var(--scale));
+      left: calc(77px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_Flag_50 {
+      top: calc(96px * var(--scale));
+      left: calc(336px * var(--scale));
+      width: calc(45px * var(--scale));
+      height: calc(80px * var(--scale));
+    }
+
+    .sPet_ItemFlower_0 {
+      top: calc(128px * var(--scale));
+      left: calc(32px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(47px * var(--scale));
+    }
+
+    .sPet_ItemFridge_0,
+    .sPet_ItemFridgeOn_0 {
+      top: calc(128px * var(--scale));
+      left: calc(208px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemFruit_0 {
+      z-index: 3;
+      top: calc(56px * var(--scale));
+      left: calc(128px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(8px * var(--scale));
+    }
+
+    .sPet_ItemGhostAppear_0 {
+      top: calc(48px * var(--scale));
+      left: calc(272px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemGolfball_0 {
+      z-index: 3;
+      top: calc(164px * var(--scale));
+      left: calc(28px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemGopher_0,
+    .sPet_ItemGopherHole_0 {
+      top: calc(161px * var(--scale));
+      left: calc(328px * var(--scale));
+      width: calc(24px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemGrapes_0 {
+      z-index: 4;
+      top: calc(157px * var(--scale));
+      left: calc(80px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemGuitar_0,
+    .sPet_ItemGuitarOn_0 {
+      top: calc(97px * var(--scale));
+      left: calc(320px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemGuitarOn_0 {
+      top: calc(96px * var(--scale));
+    }
+
+    .sPet_ItemHatrack_0,
+    .sPet_ItemHatrackEmpty_0 {
+      top: calc(136px * var(--scale));
+      left: calc(320px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemHotTub_0 {
+      top: calc(174px * var(--scale));
+      left: calc(151px * var(--scale));
+      width: calc(26px * var(--scale));
+      height: calc(17px * var(--scale));
+    }
+
+    .sPet_ItemHotTubOn_0 {
+      top: calc(174px * var(--scale));
+      left: calc(151px * var(--scale));
+      width: calc(26px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemJumpRope_0 {
+      top: calc(181px * var(--scale));
+      left: calc(232px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemLamp_0 {
+      top: calc(48px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemLily_0,
+    .sPet_ItemLilyOn_0 {
+      top: calc(176px * var(--scale));
+      left: calc(16px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemLx_0,
+    .sPet_ItemLxOn_0 {
+      top: calc(96px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemMirror_0 {
+      top: calc(48px * var(--scale));
+      left: calc(304px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemMonkey_0 {
+      z-index: 3;
+      top: calc(80px * var(--scale));
+      left: calc(33px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(48px * var(--scale));
+    }
+
+    .sPet_ItemMonkeyFence_0 {
+      top: calc(132px * var(--scale));
+      left: calc(40px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(48px * var(--scale));
+    }
+
+    .sPet_ItemOwl_0 {
+      z-index: 3;
+      top: calc(16px * var(--scale));
+      left: calc(48px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemPainting_0 {
+      top: calc(128px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemPhone_0,
+    .sPet_ItemPhoneOn_0 {
+      top: calc(96px * var(--scale));
+      left: calc(192px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemPicnicBlanket_0,
+    .sPet_ItemPicnicBlanketShade_0 {
+      z-index: 3;
+      top: calc(160px * var(--scale));
+      left: calc(64px * var(--scale));
+      width: calc(48px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemPlant_0 {
+      top: calc(128px * var(--scale));
+      left: calc(304px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemPossums_0 {
+      top: calc(0px * var(--scale));
+      left: calc(216px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemRug_0 {
+      top: calc(144px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemSatellite_0 {
+      top: calc(10px * var(--scale));
+      left: calc(312px * var(--scale));
+      width: calc(24px * var(--scale));
+      height: calc(38px * var(--scale));
+    }
+
+    .sPet_ItemSpider_0 {
+      top: calc(16px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemStove_0,
+    .sPet_ItemStoveOn_0 {
+      top: calc(128px * var(--scale));
+      left: calc(240px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemSun_0,
+    .sPet_ItemSunMoon_0 {
+      z-index: 3;
+      top: calc(8px * var(--scale));
+      left: calc(8px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemTelescope_0 {
+      top: calc(48px * var(--scale));
+      left: calc(320px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemTelescopeOn_0 {
+      top: calc(0px * var(--scale));
+      left: calc(320px * var(--scale));
+      width: calc(64px * var(--scale));
+      height: calc(80px * var(--scale));
+    }
+
+    .sPet_ItemToilet_0 {
+      top: calc(48px * var(--scale));
+      left: calc(192px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemTrapDoor_0,
+    .sPet_ItemTrapDoorOn_0 {
+      top: calc(16px * var(--scale));
+      left: calc(256px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemTrophy_0 {
+      top: calc(24px * var(--scale));
+      left: calc(240px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemTrunk_0,
+    .sPet_ItemTrunkOn_0 {
+      top: calc(16px * var(--scale));
+      left: calc(208px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemTub_0,
+    .sPet_ItemTubOn_0 {
+      top: calc(48px * var(--scale));
+      left: calc(224px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(32px * var(--scale));
+    }
+
+    .sPet_ItemTV_0,
+    .sPet_ItemTVOn_0 {
+      top: calc(96px * var(--scale));
+      left: calc(288px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .sPet_ItemWaterCan_0 {
+      z-index: 3;
+      top: calc(162px * var(--scale));
+      left: calc(200px * var(--scale));
+      width: calc(16px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_ItemWaterCanOn_0 {
+      z-index: 3;
+      top: calc(163px * var(--scale));
+      left: calc(200px * var(--scale));
+      width: calc(32px * var(--scale));
+      height: calc(16px * var(--scale));
+    }
+
+    .sPet_Tree_1,
+    .sPet_Tree_2,
+    .sPet_Tree_3,
+    .sPet_Tree_4,
+    .sPet_Tree_5 {
+      pointer-events: none;
+      top: calc(-8px * var(--scale));
+      left: calc(24px * var(--scale));
+      width: calc(128px * var(--scale));
+      height: calc(192px * var(--scale));
+    }
+
+    .sPet_Ufo_0 {
+      top: calc(0px * var(--scale));
+      left: calc(360px * var(--scale));
+      width: calc(24px * var(--scale));
+      height: calc(24px * var(--scale));
+    }
+
+    .element-toggles {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      max-width: 100%;
+      overflow-y: auto;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .element-toggles>div {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 12px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 480px) {
+      .element-toggles>div {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .element-toggles>div {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .element-toggles>div {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (min-width: 1152px) {
+      .element-toggles>div {
+        width: 1152px;
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .element-toggles>div {
+        grid-template-columns: repeat(10, 1fr);
+        width: 1536px;
+      }
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="garden-page">
+    <div class="garden-container">
+      <img src="images/sPet_BG_0.png" alt="Garden Background" class="garden-background">
+      <img src="images/sPet_HouseFG_0.png" class="garden-item sPet_HouseFG_0" id="house">
+
+      <!-- Television -->
+      <div id="televisionWrap">
+        <img src="images/sPet_ItemTV_0.png" alt="sPet_ItemTV_0" class="garden-item clickable sPet_ItemTV_0"
+          id="television1" onclick="toggleElements('television')">
+        <img src="images/sPet_ItemTVOn_0.gif" alt="sPet_ItemTVOn_0"
+          class="garden-item clickable sPet_ItemTVOn_0 is-hidden" id="television2"
+          onclick="toggleElements('television')">
+      </div>
+
+      <!-- Watering Can -->
+      <div id="wateringCanWrap">
+        <img src="images/sPet_ItemWaterCan_0.png" alt="sPet_ItemWaterCan_0"
+          class="garden-item clickable sPet_ItemWaterCan_0" id="wateringCan1" onclick="toggleElements('wateringCan')">
+        <img src="images/sPet_ItemWaterCanOn_0.png" alt="sPet_ItemWaterCanOn_0"
+          class="garden-item clickable sPet_ItemWaterCanOn_0 is-hidden" id="wateringCan2"
+          onclick="toggleElements('wateringCan')">
+      </div>
+
+      <!-- Flags -->
+      <img src="images/sPet_Flag_50.gif" alt="sPet_Flag_50" class="garden-item sPet_Flag_50 clickable" id="flag"
+        onclick="toggleElements('flag')">
+      <img src="images/sPet_FlagCherry_50.gif" alt="sPet_FlagCherry_50" class="garden-item sPet_FlagCherry_50 clickable"
+        id="cherryFlag" onclick="toggleElements('cherryFlag')">
+
+      <!-- Hot Tub -->
+      <div id="hotTubWrap">
+        <img src="images/sPet_ItemHotTub_0.png" alt="sPet_ItemHotTub_0" class="garden-item sPet_ItemHotTub_0 clickable"
+          id="hotTub1" onclick="toggleElements('hotTub')">
+        <img src="images/sPet_ItemHotTubOn_0.gif" alt="sPet_ItemHotTubOn_0"
+          class="garden-item sPet_ItemHotTubOn_0 clickable is-hidden" id="hotTub2" onclick="toggleElements('hotTub')">
+      </div>
+
+      <!-- All other garden items -->
+      <img src="images/sPet_ItemAnts_0.gif" alt="sPet_ItemAnts_0" class="garden-item sPet_ItemAnts_0 clickable"
+        id="ants" onclick="toggleElements('ants')">
+      <img src="images/sPet_ItemBed_0.png" class="garden-item sPet_ItemBed_0 clickable" id="bed"
+        onclick="toggleElements('bed')">
+      <img src="images/sPet_ItemBike_0.png" alt="sPet_ItemBike_0" class="garden-item clickable sPet_ItemBike_0"
+        id="exerciseBike" onclick="toggleElements('exerciseBike')">
+      <img src="images/sPet_ItemBird_0.png" alt="sPet_ItemBird_0" class="garden-item clickable sPet_ItemBird_0"
+        id="bird" onclick="toggleElements('bird')">
+
+      <!-- Blender -->
+      <div id="blenderWrap">
+        <img src="images/sPet_ItemBlender_0.png" alt="sPet_ItemBlender_0"
+          class="garden-item sPet_ItemBlender_0 clickable" id="blender1" onclick="toggleElements('blender')">
+        <img src="images/sPet_ItemBlenderOn_0.gif" alt="sPet_ItemBlenderOn_0"
+          class="garden-item sPet_ItemBlenderOn_0 clickable is-hidden" id="blender2"
+          onclick="toggleElements('blender')">
+      </div>
+
+      <img src="images/sPet_ItemBooks_0.png" alt="sPet_ItemBooks_0" class="garden-item sPet_ItemBooks_0 clickable"
+        id="bookshelf" onclick="toggleElements('bookshelf')">
+      <img src="images/sPet_ItemBoxes_0.png" alt="sPet_ItemBoxes_0" class="garden-item sPet_ItemBoxes_0 clickable"
+        id="cardboardBoxes" onclick="toggleElements('cardboardBoxes')">
+      <img src="images/sPet_ItemButterfly_0.png" alt="sPet_ItemButterfly_0"
+        class="garden-item sPet_ItemButterfly_0 clickable" id="butterfly" onclick="toggleElements('butterfly')">
+      <img src="images/sPet_ItemCalendar_0.png" alt="sPet_ItemCalendar_0"
+        class="garden-item sPet_ItemCalendar_0 clickable" id="calendar" onclick="toggleElements('calendar')">
+
+      <!-- Canvas paintings -->
+      <img src="images/sPet_ItemCanvas_0.png" alt="sPet_ItemCanvas_0" class="garden-item clickable sPet_ItemCanvas_0"
+        id="canvas0" onclick="toggleElements('canvas0')">
+      <img src="images/sPet_ItemCanvas_1.png" alt="sPet_ItemCanvas_1"
+        class="garden-item clickable sPet_ItemCanvas_1 is-hidden" id="canvas1" onclick="toggleElements('canvas1')">
+      <img src="images/sPet_ItemCanvas_2.png" alt="sPet_ItemCanvas_2"
+        class="garden-item clickable sPet_ItemCanvas_2 is-hidden" id="canvas2" onclick="toggleElements('canvas2')">
+      <img src="images/sPet_ItemCanvas_3.png" alt="sPet_ItemCanvas_3"
+        class="garden-item clickable sPet_ItemCanvas_3 is-hidden" id="canvas3" onclick="toggleElements('canvas3')">
+
+      <img src="images/sPet_ItemCattails_0.png" alt="sPet_ItemCattails_0"
+        class="garden-item clickable sPet_ItemCattails_0" id="cattails" onclick="toggleElements('cattails')">
+      <img src="images/sPet_ItemCouch_0.png" alt="sPet_ItemCouch_0" class="garden-item clickable sPet_ItemCouch_0"
+        id="couch" onclick="toggleElements('couch')">
+
+      <!-- Cow -->
+      <div id="cowWrap">
+        <img src="images/sPet_ItemCow_0.png" alt="sPet_ItemCow_0" class="garden-item clickable sPet_ItemCow_0" id="cow1"
+          onclick="toggleElements('cow')">
+        <img src="images/sPet_ItemCow_0.gif" alt="sPet_ItemCow_0" class="garden-item clickable sPet_ItemCow_0 is-hidden"
+          id="cow2" onclick="toggleElements('cow')">
+      </div>
+
+      <!-- Desk -->
+      <div id="deskWrap">
+        <img src="images/sPet_ItemDesk_0.png" alt="sPet_ItemDesk_0" class="garden-item clickable sPet_ItemDesk_0"
+          id="desk1" onclick="toggleElements('desk')">
+        <img src="images/sPet_ItemDeskOn_0.gif" alt="sPet_ItemDeskOn_0"
+          class="garden-item clickable sPet_ItemDeskOn_0 is-hidden" id="desk2" onclick="toggleElements('desk')">
+      </div>
+
+      <!-- Dino -->
+      <div id="dinoWrap">
+        <img src="images/sPet_ItemDino_0.png" alt="sPet_ItemDino_0" class="garden-item clickable sPet_ItemDino_0"
+          id="dino1" onclick="toggleElements('dino')">
+        <img src="images/sPet_ItemDinoOn_0.gif" alt="sPet_ItemDinoOn_0"
+          class="garden-item clickable sPet_ItemDinoOn_0 is-hidden" id="dino2" onclick="toggleElements('dino')">
+      </div>
+
+      <!-- Dirt -->
+      <div id="dirtWrap">
+        <img src="images/sPet_ItemDirt_0.png" alt="sPet_ItemDirt_0" class="garden-item clickable sPet_ItemDirt_0"
+          id="dirt1" onclick="toggleElements('dirt')">
+        <img src="images/sPet_ItemDirtOn_0.png" alt="sPet_ItemDirtOn_0"
+          class="garden-item clickable sPet_ItemDirtOn_0 is-hidden" id="dirt2" onclick="toggleElements('dirt')">
+      </div>
+
+      <!-- Fish -->
+      <div id="fishWrap">
+        <img src="images/sPet_ItemFish_0.png" alt="sPet_ItemFish_0" class="garden-item clickable sPet_ItemFish_0"
+          id="fish1" onclick="toggleElements('fish')">
+        <img src="images/sPet_ItemFishCooked_0.png" alt="sPet_ItemFishCooked_0"
+          class="garden-item clickable sPet_ItemFishCooked_0 is-hidden" id="fish2" onclick="toggleElements('fish')">
+      </div>
+
+      <!-- Fridge -->
+      <div id="fridgeWrap">
+        <img src="images/sPet_ItemFridge_0.png" alt="sPet_ItemFridge_0" class="garden-item clickable sPet_ItemFridge_0"
+          id="fridge1" onclick="toggleElements('fridge')">
+        <img src="images/sPet_ItemFridgeOn_0.png" alt="sPet_ItemFridgeOn_0"
+          class="garden-item clickable sPet_ItemFridgeOn_0 is-hidden" id="fridge2" onclick="toggleElements('fridge')">
+      </div>
+
+      <img src="images/sPet_ItemFruit_0.png" alt="sPet_ItemFruit_0" class="garden-item clickable sPet_ItemFruit_0"
+        id="fruit" onclick="toggleElements('fruit')">
+      <img src="images/sPet_ItemGolfball_0.png" alt="sPet_ItemGolfball_0"
+        class="garden-item sPet_ItemGolfball_0 clickable" id="golfBall" onclick="toggleElements('golfBall')">
+
+      <!-- Gopher -->
+      <div id="gopherWrap">
+        <img src="images/sPet_ItemGopherHole_0.png" alt="sPet_ItemGopherHole_0"
+          class="garden-item sPet_ItemGopherHole_0 clickable" id="gopher1" onclick="toggleElements('gopher')">
+        <img src="images/sPet_ItemGopher_0.gif" alt="sPet_ItemGopher_0"
+          class="garden-item sPet_ItemGopher_0 clickable is-hidden" id="gopher2" onclick="toggleElements('gopher')">
+      </div>
+
+      <!-- Guitar -->
+      <div id="guitarWrap">
+        <img src="images/sPet_ItemGuitar_0.png" alt="sPet_ItemGuitar_0" class="garden-item clickable sPet_ItemGuitar_0"
+          id="guitar1" onclick="toggleElements('guitar')">
+        <img src="images/sPet_ItemGuitarOn_0.png" alt="sPet_ItemGuitarOn_0"
+          class="garden-item clickable sPet_ItemGuitarOn_0 is-hidden" id="guitar2" onclick="toggleElements('guitar')">
+      </div>
+
+      <!-- Hat Rack -->
+      <div id="hatRackWrap">
+        <img src="images/sPet_ItemHatrack_0.png" alt="sPet_ItemHatrack_0"
+          class="garden-item clickable sPet_ItemHatrack_0" id="hatRack1" onclick="toggleElements('hatRack')">
+        <img src="images/sPet_ItemHatrackEmpty_0.png" alt="sPet_ItemHatrackEmpty_0"
+          class="garden-item clickable sPet_ItemHatrackEmpty_0 is-hidden" id="hatRack2"
+          onclick="toggleElements('hatRack')">
+      </div>
+
+      <img src="images/sPet_ItemJumpRope_0.png" alt="sPet_ItemJumpRope_0"
+        class="garden-item sPet_ItemJumpRope_0 clickable" id="jumpRope" onclick="toggleElements('jumpRope')">
+      <img src="images/sPet_ItemLamp_0.png" alt="sPet_ItemLamp_0" class="garden-item sPet_ItemLamp_0 clickable"
+        id="lamp" onclick="toggleElements('lamp')">
+
+      <!-- Frog/Lily -->
+      <div id="frogWrap">
+        <img src="images/sPet_ItemLily_0.gif" alt="sPet_ItemLily_0" class="garden-item clickable sPet_ItemLily_0"
+          id="frog1" onclick="toggleElements('frog')">
+        <img src="images/sPet_ItemLilyOn_0.gif" alt="sPet_ItemLilyOn_0"
+          class="garden-item clickable sPet_ItemLilyOn_0 is-hidden" id="frog2" onclick="toggleElements('frog')">
+      </div>
+
+      <!-- LX System -->
+      <div id="lxSystem">
+        <img src="images/sPet_ItemLx_0.png" alt="sPet_ItemLx_0" class="garden-item sPet_ItemLx_0 clickable" id="lx1"
+          onclick="toggleElements('lx')">
+        <img src="images/sPet_ItemLxOn_0.gif" alt="sPet_ItemLxOn_0"
+          class="garden-item sPet_ItemLxOn_0 clickable is-hidden" id="lx2" onclick="toggleElements('lx')">
+      </div>
+
+      <img src="images/sPet_ItemMirror_0.png" alt="sPet_ItemMirror_0" class="garden-item sPet_ItemMirror_0 clickable"
+        id="mirror" onclick="toggleElements('mirror')">
+      <img src="images/sPet_ItemMonkey_0.png" alt="sPet_ItemMonkey_0" class="garden-item clickable sPet_ItemMonkey_0"
+        id="monkey" onclick="toggleElements('monkey')">
+      <img src="images/sPet_ItemMonkeyFence_0.png" alt="sPet_ItemMonkeyFence_0"
+        class="garden-item clickable sPet_ItemMonkeyFence_0" id="monkeyFence" onclick="toggleElements('monkeyFence')">
+      <img src="images/sPet_ItemOwl_0.gif" alt="sPet_ItemOwl_0" class="garden-item sPet_ItemOwl_0 clickable" id="owl"
+        onclick="toggleElements('owl')">
+      <img src="images/sPet_ItemPainting_0.png" alt="sPet_ItemPainting_0"
+        class="garden-item sPet_ItemPainting_0 clickable" id="painting" onclick="toggleElements('painting')">
+      <img src="images/sPet_ItemPhone_0.png" alt="sPet_ItemPhone_0" class="garden-item sPet_ItemPhone_0 clickable"
+        id="phone" onclick="toggleElements('phone')">
+      <img src="images/sPet_ItemPhoneOn_0.png" alt="sPet_ItemPhoneOn_0" class="garden-item sPet_ItemPhoneOn_0">
+
+      <!-- Picnic Blanket -->
+      <div id="picnicBlanketWrap">
+        <img src="images/sPet_ItemPicnicBlanketShade_0.png" alt="sPet_ItemPicnicBlanketShade_0"
+          class="garden-item clickable sPet_ItemPicnicBlanketShade_0" id="picnicBlanket1"
+          onclick="toggleElements('picnicBlanket')">
+        <img src="images/sPet_ItemPicnicBlanket_0.png" alt="sPet_ItemPicnicBlanket_0"
+          class="garden-item clickable sPet_ItemPicnicBlanket_0 is-hidden" id="picnicBlanket2"
+          onclick="toggleElements('picnicBlanket')">
+      </div>
+
+      <img src="images/sPet_ItemPlant_0.png" alt="sPet_ItemPlant_0" class="garden-item clickable sPet_ItemPlant_0"
+        id="housePlant" onclick="toggleElements('housePlant')">
+
+      <!-- Possums -->
+      <div id="possumsWrap">
+        <img src="images/sPet_ItemPossums_0.png" alt="sPet_ItemPossums_0"
+          class="garden-item sPet_ItemPossums_0 clickable" id="possums1" onclick="toggleElements('possums')">
+        <img src="images/sPet_ItemPossums_0.gif" alt="sPet_ItemPossums_0"
+          class="garden-item sPet_ItemPossums_0 clickable is-hidden" id="possums2" onclick="toggleElements('possums')">
+      </div>
+
+      <img src="images/sPet_ItemGhostAppear_0.gif" alt="sPet_ItemGhostAppear_0"
+        class="garden-item sPet_ItemGhostAppear_0 clickable" id="ghost" onclick="toggleElements('ghost')">
+      <img src="images/sPet_ItemRug_0.png" alt="sPet_ItemRug_0" class="garden-item sPet_ItemRug_0 clickable" id="rug"
+        onclick="toggleElements('rug')">
+      <img src="images/sPet_ItemSatellite_0.png" alt="sPet_ItemSatellite_0"
+        class="garden-item sPet_ItemSatellite_0 clickable" id="satellite" onclick="toggleElements('satellite')">
+      <img src="images/sPet_ItemSpider_0.png" alt="sPet_ItemSpider_0" class="garden-item sPet_ItemSpider_0 clickable"
+        id="spider" onclick="toggleElements('spider')">
+
+      <!-- Stove -->
+      <div id="stoveWrap">
+        <img src="images/sPet_ItemStove_0.png" alt="sPet_ItemStove_0" class="garden-item clickable sPet_ItemStove_0"
+          id="stove1" onclick="toggleElements('stove')">
+        <img src="images/sPet_ItemStoveOn_0.gif" alt="sPet_ItemStoveOn_0"
+          class="garden-item clickable sPet_ItemStoveOn_0 is-hidden" id="stove2" onclick="toggleElements('stove')">
+      </div>
+
+      <!-- Sun/Moon -->
+      <div id="sunMoonWrap">
+        <img src="images/sPet_ItemSun_0.gif" alt="sPet_ItemSun_0" class="garden-item clickable sPet_ItemSun_0" id="sun1"
+          onclick="toggleElements('sun')">
+        <img src="images/sPet_ItemSunMoon_0.png" alt="sPet_ItemSunMoon_0"
+          class="garden-item clickable sPet_ItemSunMoon_0 is-hidden" id="sun2" onclick="toggleElements('sun')">
+      </div>
+
+      <!-- Telescope -->
+      <div id="telescopeWrap">
+        <img src="images/sPet_ItemTelescope_0.png" alt="sPet_ItemTelescope_0"
+          class="garden-item clickable sPet_ItemTelescope_0" id="telescope1" onclick="toggleElements('telescope')">
+        <img src="images/sPet_ItemTelescopeOn_0.gif" alt="sPet_ItemTelescopeOn_0"
+          class="garden-item clickable sPet_ItemTelescopeOn_0 is-hidden" id="telescope2"
+          onclick="toggleElements('telescope')">
+      </div>
+
+      <img src="images/sPet_ItemFlower_0.png" alt="sPet_ItemFlower_0" class="garden-item sPet_ItemFlower_0 clickable"
+        id="sunflower" onclick="toggleElements('sunflower')">
+      <img src="images/sPet_ItemToilet_0.png" alt="sPet_ItemToilet_0" class="garden-item sPet_ItemToilet_0 clickable"
+        id="toilet" onclick="toggleElements('toilet')">
+
+      <!-- Trapdoor -->
+      <div id="trapdoorWrap">
+        <img src="images/sPet_ItemTrapDoor_0.png" alt="sPet_ItemTrapDoor_0"
+          class="garden-item clickable sPet_ItemTrapDoor_0" id="trapdoor1" onclick="toggleElements('trapdoor')">
+        <img src="images/sPet_ItemTrapDoorOn_0.png" alt="sPet_ItemTrapDoorOn_0"
+          class="garden-item clickable sPet_ItemTrapDoorOn_0 is-hidden" id="trapdoor2"
+          onclick="toggleElements('trapdoor')">
+      </div>
+
+      <!-- Tub -->
+      <div id="tubWrap">
+        <img src="images/sPet_ItemTub_0.png" alt="sPet_ItemTub_0" class="garden-item clickable sPet_ItemTub_0" id="tub1"
+          onclick="toggleElements('tub')">
+        <img src="images/sPet_ItemTubOn_0.gif" alt="sPet_ItemTubOn_0"
+          class="garden-item clickable sPet_ItemTubOn_0 is-hidden" id="tub2" onclick="toggleElements('tub')">
+      </div>
+
+      <!-- Trees -->
+      <img src="images/sPet_Tree_1.png" alt="sPet_Tree_1" class="garden-item sPet_Tree_1" id="tree1">
+      <img src="images/sPet_Tree_2.png" alt="sPet_Tree_2" class="garden-item sPet_Tree_2" id="tree2">
+      <img src="images/sPet_Tree_3.png" alt="sPet_Tree_3" class="garden-item sPet_Tree_3" id="tree3">
+      <img src="images/sPet_Tree_4.png" alt="sPet_Tree_4" class="garden-item sPet_Tree_4" id="tree4">
+      <img src="images/sPet_Tree_5.png" alt="sPet_Tree_5" class="garden-item sPet_Tree_5" id="tree5">
+
+      <img src="images/sPet_ItemTrophy_0.png" alt="sPet_ItemTrophy_0" class="garden-item sPet_ItemTrophy_0 clickable"
+        id="trophy" onclick="toggleElements('trophy')">
+
+      <!-- Trunk -->
+      <div id="trunkWrap">
+        <img src="images/sPet_ItemTrunk_0.png" alt="sPet_ItemTrunk_0" class="garden-item clickable sPet_ItemTrunk_0"
+          id="trunk1" onclick="toggleElements('trunk')">
+        <img src="images/sPet_ItemTrunkOn_0.gif" alt="sPet_ItemTrunkOn_0"
+          class="garden-item clickable sPet_ItemTrunkOn_0 is-hidden" id="trunk2" onclick="toggleElements('trunk')">
+      </div>
+
+      <img src="images/sPet_Drink_0.png" alt="sPet_Drink_0" class="garden-item clickable sPet_Drink_0" id="drink"
+        onclick="toggleElements('drink')">
+      <img src="images/sPet_ItemGrapes_0.png" alt="sPet_ItemGrapes_0" class="garden-item clickable sPet_ItemGrapes_0"
+        id="grapes" onclick="toggleElements('grapes')">
+      <img src="images/sPet_Ufo_0.gif" alt="sPet_Ufo_0" class="garden-item clickable sPet_Ufo_0" id="ufo"
+        onclick="toggleElements('ufo')">
+    </div>
+
+    <div class="element-toggles">
+      <div>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-trapdoor" checked
+            onchange="toggleVisibility('trapdoorWrap', this.checked)">
+          <span>Trapdoor</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-bed" checked onchange="toggleVisibility('bed', this.checked)">
+          <span>Bed</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-hotTub" checked onchange="toggleVisibility('hotTubWrap', this.checked)">
+          <span>Hot Tub</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-spider" checked onchange="toggleVisibility('spider', this.checked)">
+          <span>Spider</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-possums" checked onchange="toggleVisibility('possumsWrap', this.checked)">
+          <span>Opossums</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-ghost" checked onchange="toggleVisibility('ghost', this.checked)">
+          <span>Ghost</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-canvas0" checked onchange="toggleVisibility('canvas0', this.checked)">
+          <span>Canvas 1</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-canvas1" onchange="toggleVisibility('canvas1', this.checked)">
+          <span>Canvas 2</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-canvas2" onchange="toggleVisibility('canvas2', this.checked)">
+          <span>Canvas 3</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-canvas3" onchange="toggleVisibility('canvas3', this.checked)">
+          <span>Canvas 4</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-wateringCan" checked
+            onchange="toggleVisibility('wateringCanWrap', this.checked)">
+          <span>Watering Can</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-housePlant" checked
+            onchange="toggleVisibility('housePlant', this.checked)">
+          <span>Plant</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-fruit" checked onchange="toggleVisibility('fruit', this.checked)">
+          <span>Fruit</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-cattails" checked onchange="toggleVisibility('cattails', this.checked)">
+          <span>Cattails</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-painting" checked onchange="toggleVisibility('painting', this.checked)">
+          <span>Painting</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-stove" checked onchange="toggleVisibility('stoveWrap', this.checked)">
+          <span>Stove</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-jumpRope" checked onchange="toggleVisibility('jumpRope', this.checked)">
+          <span>Jump Rope</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-bird" checked onchange="toggleVisibility('bird', this.checked)">
+          <span>Bird</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-couch" checked onchange="toggleVisibility('couch', this.checked)">
+          <span>Couch</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-monkey" checked onchange="toggleVisibility('monkey', this.checked)">
+          <span>Monkey</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-monkeyFence" checked
+            onchange="toggleVisibility('monkeyFence', this.checked)">
+          <span>Monkey Fence</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-cardboardBoxes" checked
+            onchange="toggleVisibility('cardboardBoxes', this.checked)">
+          <span>Boxes</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-frog" checked onchange="toggleVisibility('frogWrap', this.checked)">
+          <span>Frog</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-telescope" checked
+            onchange="toggleVisibility('telescopeWrap', this.checked)">
+          <span>Telescope</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-gopher" checked onchange="toggleVisibility('gopherWrap', this.checked)">
+          <span>Gopher</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-butterfly" checked onchange="toggleVisibility('butterfly', this.checked)">
+          <span>Butterfly</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-lamp" checked onchange="toggleVisibility('lamp', this.checked)">
+          <span>Lamp</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-toilet" checked onchange="toggleVisibility('toilet', this.checked)">
+          <span>Toilet</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-phone" checked onchange="toggleVisibility('phone', this.checked)">
+          <span>Telephone</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-fridge" checked onchange="toggleVisibility('fridgeWrap', this.checked)">
+          <span>Fridge</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-calendar" checked onchange="toggleVisibility('calendar', this.checked)">
+          <span>Calendar</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-exerciseBike" checked
+            onchange="toggleVisibility('exerciseBike', this.checked)">
+          <span>Exercise Bike</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tub" checked onchange="toggleVisibility('tubWrap', this.checked)">
+          <span>Tub</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-guitar" checked onchange="toggleVisibility('guitarWrap', this.checked)">
+          <span>Guitar</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-television" checked
+            onchange="toggleVisibility('televisionWrap', this.checked)">
+          <span>TV</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-dino" checked onchange="toggleVisibility('dinoWrap', this.checked)">
+          <span>Dino</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-golfBall" checked onchange="toggleVisibility('golfBall', this.checked)">
+          <span>Golf Ball</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-trunk" checked onchange="toggleVisibility('trunkWrap', this.checked)">
+          <span>Trunk</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-blender" checked onchange="toggleVisibility('blenderWrap', this.checked)">
+          <span>Blender</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-satellite" checked onchange="toggleVisibility('satellite', this.checked)">
+          <span>Satellite</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-trophy" checked onchange="toggleVisibility('trophy', this.checked)">
+          <span>Trophy</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-bookshelf" checked onchange="toggleVisibility('bookshelf', this.checked)">
+          <span>Bookshelf</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-mirror" checked onchange="toggleVisibility('mirror', this.checked)">
+          <span>Mirror</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-sunflower" checked onchange="toggleVisibility('sunflower', this.checked)">
+          <span>Sunflower</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-cow" checked onchange="toggleVisibility('cowWrap', this.checked)">
+          <span>Cow</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-picnicBlanket" checked
+            onchange="toggleVisibility('picnicBlanketWrap', this.checked)">
+          <span>Picnic Mat</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-dirt" checked onchange="toggleVisibility('dirtWrap', this.checked)">
+          <span>Dirt</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-rug" checked onchange="toggleVisibility('rug', this.checked)">
+          <span>Rug</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-ants" checked onchange="toggleVisibility('ants', this.checked)">
+          <span>Ants</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-desk" checked onchange="toggleVisibility('deskWrap', this.checked)">
+          <span>Computer</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-hatRack" checked onchange="toggleVisibility('hatRackWrap', this.checked)">
+          <span>Hat Rack</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-lx" checked onchange="toggleVisibility('lxSystem', this.checked)">
+          <span>LX System</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-owl" checked onchange="toggleVisibility('owl', this.checked)">
+          <span>Owl</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-sun" checked onchange="toggleVisibility('sunMoonWrap', this.checked)">
+          <span>Sun/Moon</span>
+        </label>
+      </div>
+      <div>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-house" onchange="toggleVisibility('house', this.checked)">
+          <span>House</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-flag" checked onchange="toggleVisibility('flag', this.checked)">
+          <span>Flag</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-cherryFlag" checked
+            onchange="toggleVisibility('cherryFlag', this.checked)">
+          <span>Cherry flag</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tree1" checked onchange="toggleVisibility('tree1', this.checked)">
+          <span>Tree 1</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tree2" checked onchange="toggleVisibility('tree2', this.checked)">
+          <span>Tree 2</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tree3" checked onchange="toggleVisibility('tree3', this.checked)">
+          <span>Tree 3</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tree4" checked onchange="toggleVisibility('tree4', this.checked)">
+          <span>Tree 4</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-tree5" checked onchange="toggleVisibility('tree5', this.checked)">
+          <span>Tree 5</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-grapes" checked onchange="toggleVisibility('grapes', this.checked)">
+          <span>Grapes</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-drink" checked onchange="toggleVisibility('drink', this.checked)">
+          <span>Drink</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-fish" checked onchange="toggleVisibility('fishWrap', this.checked)">
+          <span>Fish</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="checkbox-ufo" checked onchange="toggleVisibility('ufo', this.checked)">
+          <span>UFO</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle states for paired elements
+    const toggleStates = {
+      television: false,
+      wateringCan: false,
+      hotTub: false,
+      blender: false,
+      cow: false,
+      desk: false,
+      dino: false,
+      dirt: false,
+      fish: false,
+      fridge: false,
+      gopher: false,
+      guitar: false,
+      hatRack: false,
+      frog: false,
+      lx: false,
+      picnicBlanket: false,
+      possums: false,
+      stove: false,
+      sun: false,
+      telescope: false,
+      trapdoor: false,
+      trunk: false,
+      tub: false
+    };
+
+    // Toggle between paired elements (like on/off states)
+    function toggleElements(elementKey) {
+      const isCurrentlyFirst = !toggleStates[elementKey];
+      toggleStates[elementKey] = !toggleStates[elementKey];
+
+      const element1 = document.getElementById(elementKey + '1');
+      const element2 = document.getElementById(elementKey + '2');
+
+      if (element1 && element2) {
+        if (isCurrentlyFirst) {
+          element1.classList.add('is-hidden');
+          element2.classList.remove('is-hidden');
+        } else {
+          element1.classList.remove('is-hidden');
+          element2.classList.add('is-hidden');
+        }
+      }
+
+      // Handle single elements (like canvas switching)
+      if (elementKey.startsWith('canvas')) {
+        // Hide all canvases first
+        for (let i = 0; i < 4; i++) {
+          const canvas = document.getElementById('canvas' + i);
+          if (canvas) canvas.classList.add('is-hidden');
+        }
+        // Show the clicked canvas
+        const clickedCanvas = document.getElementById(elementKey);
+        if (clickedCanvas) clickedCanvas.classList.remove('is-hidden');
+      }
+    }
+
+    // Toggle visibility of entire elements via checkboxes
+    function toggleVisibility(elementId, isVisible) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        if (isVisible) {
+          element.classList.remove('is-hidden');
+        } else {
+          element.classList.add('is-hidden');
+        }
+      }
+    }
+
+    // Initialize canvas visibility (only show first canvas by default)
+    document.addEventListener('DOMContentLoaded', function () {
+      // Hide canvases 1, 2, 3 by default (show only canvas 0)
+      for (let i = 1; i < 4; i++) {
+        const canvas = document.getElementById('canvas' + i);
+        if (canvas) canvas.classList.add('is-hidden');
+      }
+
+      // Initialize house as hidden
+      const house = document.getElementById('house');
+      if (house) house.classList.add('is-hidden');
+    });
+  </script>
+</body>
+
+</html>
